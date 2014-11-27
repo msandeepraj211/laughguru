@@ -1,6 +1,7 @@
 angular.module('testApp',['ui.router']).controller('mainCtrl',['$scope','$http','$state',function($scope,$http,$state){
 	$scope.score=0;
 	$scope.level=1;
+	$scope.progress=0;
 	window.scope=$scope;
 	$scope.startTest=function(test){
 		$http.get('/test/'+test).success(function(data,status){
@@ -26,7 +27,7 @@ angular.module('testApp',['ui.router']).controller('mainCtrl',['$scope','$http',
 	$scope.resultPage=function(){
 		$state.transitionTo('result');
 		$scope.score=$scope.score+$scope.testScore;
-		$scope.progress=Math.floor($scope.testScore/1.5);
+		$scope.progress=$scope.prevProgress+Math.floor($scope.testScore/1.5);
 	};
 	$scope.levelArc=function(value){
 		console.log('fn called'+ new Date().getTime())
@@ -47,6 +48,7 @@ angular.module('testApp',['ui.router']).controller('mainCtrl',['$scope','$http',
                 .diameter(150)
                 .value(value)
                 .render();
+            $scope.prevProgress=value;
 		}
 	}
 	$scope.home=function(){
