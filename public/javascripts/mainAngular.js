@@ -1,7 +1,7 @@
 angular.module('testApp',['ui.router']).controller('mainCtrl',['$scope','$http','$state',function($scope,$http,$state){
 	$scope.score=0;
 	$scope.level=1;
-	$scope.progress=0;
+	$scope.prevProgress=0;
 	window.scope=$scope;
 	$scope.startTest=function(test){
 		$http.get('/test/'+test).success(function(data,status){
