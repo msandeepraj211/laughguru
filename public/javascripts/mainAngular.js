@@ -1,6 +1,7 @@
 angular.module('testApp',['ui.router']).controller('mainCtrl',['$scope','$http','$state',function($scope,$http,$state){
 	$scope.score=0;
-	console.log('yes running');
+	$scope.level=1;
+	window.scope=$scope;
 	$scope.startTest=function(test){
 		$http.get('/test/'+test).success(function(data,status){
 			$state.transitionTo('test');
@@ -9,7 +10,6 @@ angular.module('testApp',['ui.router']).controller('mainCtrl',['$scope','$http',
 			$scope.QuestionNo=0;
 		});
 	}
-	window.scope=$scope
 	$scope.optionSubmitted= function(Qindex,index){
 		if(!$scope.results[Qindex].answered){
 			$scope.results[Qindex].answered=true;
@@ -19,7 +19,6 @@ angular.module('testApp',['ui.router']).controller('mainCtrl',['$scope','$http',
 				$scope.results[Qindex].choices[index].wrongAnswer= true;
 			}
 		}
-		/*$scope.$apply();*/
 	};
 	$scope.nextQuestion=function(){
 		$scope.QuestionNo=$scope.QuestionNo+1;
@@ -33,14 +32,18 @@ angular.module('testApp',['ui.router']).controller('mainCtrl',['$scope','$http',
 		console.log('fn called'+ new Date().getTime())
 		if(value>=100){
 			var rp1 = radialProgress(document.getElementById('levelArc'))
-                .label("Progress")
+                .label("Progress to next level")
                 .diameter(150)
                 .value(100)
                 .render();
-            setTimeout(function(){$scope.levelArc(value-100)}, 1000);
+            setTimeout(function(){
+            	$scope.level=$scope.level+1;
+            	$scope.$apply();
+            	$scope.levelArc(value-100);
+            }, 1000);
 		}else{
 			var rp1 = radialProgress(document.getElementById('levelArc'))
-                .label("Progress")
+                .label("Progress to next  level")
                 .diameter(150)
                 .value(value)
                 .render();
